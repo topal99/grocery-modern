@@ -1,18 +1,25 @@
-// frontend/next.config.js
-
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
   images: {
     remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'via.placeholder.com',
+      },
       {
         protocol: 'http',
         hostname: '127.0.0.1',
         port: '8000',
-        pathname: '/storage/**',
+        pathname: '/storage/**', // Lebih spesifik jika memungkinkan
       },
+      {
+        protocol: 'http',
+        hostname: 'localhost', // Tambahkan ini untuk jaga-jaga
+        port: '8000',
+        pathname: '/storage/**',
+      }
     ],
   },
-};
+}
 
-module.exports = nextConfig;
+module.exports = nextConfig

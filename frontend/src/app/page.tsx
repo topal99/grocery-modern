@@ -61,6 +61,8 @@ export default async function HomePage({ searchParams }: { searchParams: { page?
   ]);
   
   return (
+        <div className="bg-background text-foreground min-h-screen">
+
     <main>
       {/* Bagian 1: Hero Slider (Carousel) */}
       <HeroSlider banners={homepageData.banners} />
@@ -101,5 +103,6 @@ export default async function HomePage({ searchParams }: { searchParams: { page?
       <Separator className="my-8" />
 
     </main>
+    </div>
   );
 }

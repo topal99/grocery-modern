@@ -25,8 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* LANGKAH 3: Gunakan className dari variabel 'inter' */}
-      <body className={inter.className}>
+      <body className="font-body antialiased flex flex-col min-h-screen">
+        <div className="flex-grow">
         
         <Header />
         
@@ -35,7 +35,7 @@ export default function RootLayout({
         </main>
 
       <Footer />
-
+        </div>
       </body>
     </html>
   );

@@ -6,6 +6,7 @@ use Grocery\Http\Controllers\Controller;
 use Grocery\Models\Category;
 use Grocery\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; 
 
 class HomepageController extends Controller
 {
@@ -19,13 +20,25 @@ class HomepageController extends Controller
 
         // 4. Data Banner & Testimoni (Hardcoded)
         // Untuk saat ini, kita buat data palsu langsung di sini.
-        $banners = [
-            ['image_url' => 'heroslider/slide-1.jpg', 'title' => 'Mega Sale Diskon 50%', 'subtitle' => 'Untuk semua produk fashion wanita', 'link' => '/categories/pakaian'],
-            ['image_url' => 'heroslider/slide-2.jpg', 'title' => 'Gadget Terbaru 2025', 'subtitle' => 'Teknologi terdepan di ujung jari Anda', 'link' => '/categories/elektronik'],
-            ['image_url' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=2070', 'title' => 'Elektronik Terbaru 2025', 'subtitle' => 'Teknologi terdepan di ujung jari Anda', 'link' => '/categories/elektronik'],
-            // ['image_url' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=2070', 'title' => 'Fashion Terbaru 2025', 'subtitle' => 'Teknologi terdepan di ujung jari Anda', 'link' => '/categories/elektronik'],
-            // ['image_url' => 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?q=80&w=2070', 'title' => 'Furniture Terbaru 2025', 'subtitle' => 'Teknologi terdepan di ujung jari Anda', 'link' => '/categories/elektronik'],
-        ];
+        $bannerFiles = Storage::disk('public')->files('banners');
+        $banners = [];
+        foreach ($bannerFiles as $file) {
+            $banners[] = [
+                // 3. Buat URL lengkap untuk setiap gambar
+                'image_url' => url('storage/' . $file),
+                'title' => 'Judul Banner Anda', // Ganti dengan judul yang sesuai
+                'subtitle' => 'Subjudul untuk banner ini', // Ganti dengan subjudul
+                'link' => '/products' // Tautan tujuan saat banner di-klik
+            ];
+        }
+
+        // Jika tidak ada gambar di folder banners, gunakan gambar default
+        if (empty($banners)) {
+            $banners = [
+                ['image_url' => 'https://via.placeholder.com/1920x1080.png/0077ff?text=Banner+1', 'title' => 'Banner Default 1', 'subtitle' => 'Silakan upload gambar ke folder storage/app/public/banners', 'link' => '/'],
+                ['image_url' => 'https://via.placeholder.com/1920x1080.png/ff0055?text=Banner+2', 'title' => 'Banner Default 2', 'subtitle' => 'Gambar akan tampil di sini', 'link' => '/'],
+            ];
+        }
 
         // Gabungkan semua data menjadi satu response
         return response()->json([
