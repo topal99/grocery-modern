@@ -34,7 +34,7 @@ const HeroSlider: React.FC<{ banners: Banner[] }> = ({ banners }) => {
       >
         {banners.map((banner, index) => (
           <SwiperSlide key={index}>
-            <div className="relative w-full h-[300px] md:h-[550px]">
+            <div className="relative w-full h-[450px] md:h-[550px]">
               <Image
                 src={banner.image_url}
                 alt={banner.title}
@@ -42,7 +42,7 @@ const HeroSlider: React.FC<{ banners: Banner[] }> = ({ banners }) => {
                 objectFit="cover"
                 priority={index === 0}
               />
-              <div className="absolute inset-0 bg-black opacity-40"></div>
+              <div className="absolute inset-0 bg-black opacity-20"></div>
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white p-4">
                 <h1 className="text-4xl md:text-6xl font-bold mb-2">
                   {banner.title}

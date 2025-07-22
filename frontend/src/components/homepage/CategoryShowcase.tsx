@@ -6,6 +6,9 @@ import {
     Armchair, Bike, Briefcase, Lamp, Shirt, ShoppingBasket, Smartphone, Watch,
     type LucideIcon, HelpCircle // HelpCircle sebagai ikon default
 } from "lucide-react";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
+import { Card, CardContent } from "../ui/card";
+import Autoplay from "embla-carousel-autoplay"
 
 // Definisikan tipe data untuk kategori agar lebih aman
 interface Category {
@@ -28,29 +31,48 @@ const iconMap: { [key: string]: LucideIcon } = {
 };
 
 export default function CategoryShowcase({ categories }: { categories: Category[] }) {
+    
     return (
-        <section className="w-full py-12 md:py-10 bg-gray-50">
-            <div className="container mx-auto px-8">
-                <div className="grid grid-cols-4 md:grid-cols-8 gap-4 text-center">
+    <section className="py-8">
+        <h2 className="text-2xl font-bold font-headline mb-8">Featured Categories</h2>
+            <Carousel 
+                opts={{
+                    align: "start",
+                    loop: true,
+                }}
+                plugins={[
+                    Autoplay({
+                        delay: 5000,
+                        stopOnInteraction: true,
+                    }),
+                ]}
+                className="w-full"
+            >
+                <CarouselContent>
                     {categories.map((category) => {
-                        // Ambil komponen ikon dari map, atau gunakan ikon default jika tidak ditemukan
+                        // 👇 PERUBAHAN DI SINI
+                        // 1. Ambil komponen Ikon dari map menggunakan nama string dari kategori.
+                        // 2. Sediakan ikon default (HelpCircle) jika nama ikon tidak ditemukan di map.
                         const IconComponent = iconMap[category.icon] || HelpCircle;
 
                         return (
-                            <Link
-                                href={`/categories/${category.slug}`}
-                                key={category.id}
-                                className="group flex flex-col items-center gap-2 p-2 rounded-lg transition-all duration-300"
-                            >
-                                <div className="bg-white border p-4 rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-blue-500 group-hover:text-white shadow-sm">
-                                    <IconComponent className="h-8 w-8 text-blue-500 transition-colors duration-300 group-hover:text-white" />
-                                </div>
-                                <p className="text-sm font-medium text-gray-700 whitespace-nowrap">{category.name}</p>
-                            </Link>
+                            <CarouselItem key={category.id} className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/6">
+                                <Link href={`/categories/${category.slug}`}>
+                                    <Card className="hover:shadow-lg transition-shadow duration-300">
+                                        <CardContent className="flex flex-col items-center justify-center p-4 gap-4">
+                                            {/* 3. Render komponen Ikon yang sudah ditemukan */}
+                                            <IconComponent className="w-8 h-8 text-gray-700" />
+                                            <span className="font-semibold text-center text-sm">{category.name}</span>
+                                        </CardContent>
+                                    </Card>
+                                </Link>
+                            </CarouselItem>
                         );
                     })}
-                </div>
-            </div>
-        </section>
+                </CarouselContent>
+                <CarouselPrevious className="hidden md:flex -left-4 bg-background/50 hover:bg-background/80" />
+                <CarouselNext className="hidden md:flex -right-4 bg-background/50 hover:bg-background/80" />
+            </Carousel>
+    </section>
     );
 }

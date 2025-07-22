@@ -28,12 +28,10 @@ export default async function RecommendedProducts({ productId }: { productId: nu
     }
 
     return (
-        <section className="py-12 md:py-16 bg-gray-50">
-            <div className="container mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-8">Anda Mungkin Juga Suka</h2>
+        <section className="py-12 md:py-16">
+                <h2 className="text-3xl font-bold mb-8">Related Products</h2>
                 {/* Kita teruskan data ke komponen klien yang menangani interaksi carousel */}
                 <ProductCarouselClient products={recommendedProducts} />
-            </div>
         </section>
     );
 }

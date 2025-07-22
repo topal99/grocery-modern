@@ -1,7 +1,7 @@
 import Link from "next/link"
 import Image from 'next/image'; 
 
-import { Facebook, Twitter, Instagram, Github } from "lucide-react"
+import { Facebook, Twitter, Instagram, Github, ShoppingBagIcon } from "lucide-react"
 // import Logo from "@/logo"
 
 export default function Footer() {
@@ -34,15 +34,15 @@ export default function Footer() {
   }
 
   return (
-    <footer className="text-card-foreground border-t">
-      <div className="container mx-auto px-4 py-12">
+    <footer className="text-card-foreground border-t ">
+      <div className="container max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex flex-col">
 
             <div className="flex items-center gap-2 mb-4">
-              <Image src="/mylogo.png" alt="E-Comm Logo" width={50} height={50} className="h-10 w-10" />
+              <ShoppingBagIcon className="h-7 w-7 text-primary" />
               <Link href="/">
-                <span className="text-xl font-bold">E-Comm</span>
+                <span className="text-xl font-bold">Grocery</span>
               </Link>
               </div>
 
@@ -75,7 +75,7 @@ export default function Footer() {
           ))}
         </div>
         <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} E-Comm. All Rights Reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Grocery. All Rights Reserved.</p>
         </div>
       </div>
     </footer>

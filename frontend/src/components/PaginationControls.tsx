@@ -38,11 +38,11 @@ export default function PaginationControls({ currentPage, lastPage, hasNextPage,
         disabled={!hasPrevPage}
       >
         <ChevronLeft className="h-4 w-4 mr-2" />
-        Previous
+        
       </Button>
 
       <span className="text-sm font-medium">
-        Halaman {currentPage} dari {lastPage}
+       Page {currentPage} from {lastPage}
       </span>
 
       <Button
@@ -50,7 +50,7 @@ export default function PaginationControls({ currentPage, lastPage, hasNextPage,
         onClick={() => handlePageChange(currentPage + 1)}
         disabled={!hasNextPage}
       >
-        Next
+        
         <ChevronRight className="h-4 w-4 ml-2" />
       </Button>
     </div>

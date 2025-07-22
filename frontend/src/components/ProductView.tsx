@@ -44,8 +44,7 @@ export default function ProductView({ initialProduct }: ProductViewProps) {
         </div>
       </div>
 
-      <Separator className="my-12" />
-            
+      <Separator className="my-10" />     
       <InfoTabs product={product} onInfoSubmitted={refreshProductData} />
     </>
   );

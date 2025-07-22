@@ -2,8 +2,7 @@ import { type Metadata } from 'next';
 import { type Product } from "@/lib/types";
 import ProductView from "@/components/ProductView";
 import { Suspense } from 'react';
-import ProductDetailsSkeleton from '@/components/ProductDetailsSkeleton'; 
-import ProductGallerySkeleton from '@/components/ProductGallerySkeleton'; 
+import RecommendedProducts from '@/components/RecommendedProducts';
 
 // Fungsi untuk mengambil data produk (tidak ada perubahan)
 async function getProduct(slug: string): Promise<Product | null> {
@@ -33,11 +32,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   // Jika produk ditemukan, buat judul dan deskripsi yang unik
   return {
-    title: `${product.name} | Phoenix Store`, // Contoh: "Kemeja Flanel Biru | Phoenix Store"
+    title: `${product.name} | Grocery Mart`, // Contoh: "Kemeja Flanel Biru | Phoenix Store"
     description: product.description.substring(0, 160), // Ambil 160 karakter pertama dari deskripsi produk
     // Anda juga bisa menambahkan metadata lain di sini, seperti gambar untuk social media
     openGraph: {
-        title: `${product.name} | Phoenix Store`,
+        title: `${product.name} | Grocery Mart`,
         description: product.description.substring(0, 160),
         images: [
             {
@@ -50,7 +49,6 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     },
   };
 }
-
 
 // Komponen Halaman Utama (tidak ada perubahan)
 export default async function ProductDetailPage({ params }: { params: { slug: string } }) {
@@ -65,12 +63,11 @@ export default async function ProductDetailPage({ params }: { params: { slug: st
       {/* 3. Bungkus komponen dinamis Anda dengan Suspense */}
       <Suspense fallback={
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
-            <ProductGallerySkeleton />
-            <ProductDetailsSkeleton />
           </div>
         }>
         <ProductView initialProduct={product} />
       </Suspense>
+      <RecommendedProducts productId={product.id} />
     </div>
   );
 }

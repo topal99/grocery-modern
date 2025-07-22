@@ -11,7 +11,7 @@ interface ProductCarouselClientProps {
 export default function ProductCarouselClient({ products }: ProductCarouselClientProps) {
     // Hook untuk menginisialisasi carousel
     const [emblaRef] = useEmblaCarousel({ 
-        slidesToScroll: 1, 
+        slidesToScroll: 2, 
         align: 'start', 
         containScroll: 'trimSnaps' 
     });

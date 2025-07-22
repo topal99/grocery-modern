@@ -37,11 +37,10 @@ async function getHomepageData() {
         const res = await fetch(`${apiUrl}/api/homepage`, { cache: 'no-store' });
         if (!res.ok) throw new Error('Gagal memuat data homepage');
         const data = await res.json();
-        // Kita tidak butuh best_sellers dari sini karena sudah diambil oleh komponennya sendiri
-        return { 
-            banners: data.data.banners || [], 
-            featured_categories: data.data.featured_categories || [], 
-            testimonials: data.data.testimonials || [] 
+        return {
+            banners: data.data.banners || [],
+            featured_categories: data.data.featured_categories || [],
+            testimonials: data.data.testimonials || []
         };
     } catch (error) {
         console.error(error);
@@ -61,33 +60,29 @@ export default async function HomePage({ searchParams }: { searchParams: { page?
   ]);
   
   return (
-        <div className="bg-background text-foreground min-h-screen">
-
     <main>
-      {/* Bagian 1: Hero Slider (Carousel) */}
-      <HeroSlider banners={homepageData.banners} />
-      
-      {/* Bagian 2: Kategori Pilihan */}
-      <CategoryShowcase categories={homepageData.featured_categories} />
-      
-      {/* Bagian 3: Produk Terlaris (Carousel) - Komponen ini mengambil datanya sendiri */}
-      <BestSellingProducts />
-      
-      <Separator className="my-12" />
+      {/* 👇 PERUBAHAN DI SINI: Tambahkan `max-w-6xl` */}
+      <section className="container">
+        {/* Bagian 1: Hero Slider (Carousel) */}
+        <HeroSlider banners={homepageData.banners} />
 
-      {/* Bagian 4: Produk Terbaru (Grid + Paginasi) */}
-      <section className="container mx-auto px-4">
-        <h2 className="text-3xl font-bold text-center mb-8">Jelajahi Produk Kami</h2>
+        {/* Bagian 2: Kategori Pilihan */}
+        <CategoryShowcase categories={homepageData.featured_categories} />
+
+        {/* Bagian 3: Produk Terlaris (Carousel) */}
+        <BestSellingProducts />
+
+        {/* Bagian 4: Produk Terbaru (Grid + Paginasi) */}
+        <h2 className="text-2xl font-bold mb-8">Jelajahi Produk Kami</h2>
         
         {productsResponse && productsResponse.data.length > 0 ? (
           <>
             {/* Tampilan Grid Produk */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {productsResponse.data.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-
+<div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+  {productsResponse.data.map((product) => (
+    <ProductCard key={product.id} product={product} />
+  ))}
+</div>
             {/* Kontrol Paginasi di Bawah Grid */}
             <PaginationControls
               currentPage={productsResponse.current_page}
@@ -101,8 +96,6 @@ export default async function HomePage({ searchParams }: { searchParams: { page?
         )}
       </section>
       <Separator className="my-8" />
-
     </main>
-    </div>
   );
 }

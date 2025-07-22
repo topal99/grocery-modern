@@ -22,8 +22,8 @@ export default function ReviewSection({ product, onReviewSubmitted }: ReviewSect
 
     return (
         <div>
-            <h2 className="text-2xl font-bold mb-4">Ulasan & Rating ({product.reviews_count || 0})</h2>
-            <div className="flex items-center gap-2 mb-6">
+            {/* <h2 className="text-2xl font-bold mb-4">Ulasan & Rating ({product.reviews_count || 0})</h2> */}
+            <div className="flex items-center gap-2 my-auto mb-6">
                 <p className="text-4xl font-bold">{rating.toFixed(1)}</p>
                 <div className="flex flex-col">
                     <div className="flex">
