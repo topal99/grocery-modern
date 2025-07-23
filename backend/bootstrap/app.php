@@ -14,7 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         // Daftarkan alias 'role' untuk middleware CheckRole
         $middleware->alias([
-            'role' => \App\Http\Middleware\CheckRole::class,
+            'role' => \Grocery\Http\Middleware\CheckRole::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

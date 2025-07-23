@@ -2,15 +2,20 @@
 'use client';
 
 import Link from "next/link";
-import {
-    Armchair, Bike, Briefcase, Lamp, Shirt, ShoppingBasket, Smartphone, Watch,
-    type LucideIcon, HelpCircle // HelpCircle sebagai ikon default
-} from "lucide-react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "../ui/carousel";
 import { Card, CardContent } from "../ui/card";
 import Autoplay from "embla-carousel-autoplay"
+import {
+    Egg,
+    Cookie,
+    Carrot,
+    CupSoda,
+    Coffee,
+    CakeSlice, 
+    Fish,
+    HelpCircle } 
+  from "lucide-react";
 
-// Definisikan tipe data untuk kategori agar lebih aman
 interface Category {
     id: number;
     name: string;
@@ -19,15 +24,14 @@ interface Category {
 }
 
 // Buat objek pemetaan dari string nama ikon ke Komponen Ikon React
-const iconMap: { [key: string]: LucideIcon } = {
-    shirt: Shirt,
-    smartphone: Smartphone,
-    watch: Watch,
-    armchair: Armchair,
-    bike: Bike,
-    'shopping-basket': ShoppingBasket, // Gunakan string untuk nama dengan tanda hubung
-    lamp: Lamp,
-    briefcase: Briefcase,
+const iconMap: { [key: string]: React.ElementType } = {
+    egg: Egg,
+    cookie: Cookie,
+    carrot: Carrot,
+    'cup-soda': CupSoda,
+    coffee: Coffee,
+    cake: CakeSlice,
+    fish: Fish,
 };
 
 export default function CategoryShowcase({ categories }: { categories: Category[] }) {

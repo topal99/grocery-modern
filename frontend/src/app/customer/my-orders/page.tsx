@@ -5,7 +5,6 @@ import Cookies from 'js-cookie';
 import toast, { Toaster } from 'react-hot-toast';
 import { Badge } from '@/components/ui/badge';
 import { type Product } from '@/lib/types';
-import OrderStatusProgress from '@/components/OrderStatusProgress'; // Import komponen progress bar
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -73,7 +72,7 @@ export default function MyOrdersPage() {
 
           return (
             // Setiap kartu pesanan sekarang adalah sebuah Link
-            <Link href={`/my-orders/${order.id}`} key={order.id}>
+            <Link href={`/customer/my-orders/${order.id}`} key={order.id}>
               <div className="bg-white p-4 rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer mb-6">
                 <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center">
                   <div>

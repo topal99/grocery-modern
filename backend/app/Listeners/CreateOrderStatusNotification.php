@@ -17,7 +17,7 @@ namespace Grocery\Listeners;
 
             $customer->notifications()->create([
                 'message' => "Status pesanan Anda #{$order->id} telah diperbarui menjadi '{$status}'.",
-                'link' => "/my-orders/{$order->id}",
+                'link' => "/customer/my-orders/{$order->id}",
             ]);
         }
     }

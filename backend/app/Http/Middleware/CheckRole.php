@@ -1,23 +1,37 @@
 <?php
 
+// PASTIKAN NAMESPACE ADALAH 'Grocery', BUKAN 'App'
 namespace Grocery\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Symfony\Component\HttpFoundation\Response;
 
 class CheckRole
 {
-    public function handle(Request $request, Closure $next, ...$roles): Response
+    /**
+     * Handle an incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  ...$roles
+     * @return mixed
+     */
+    public function handle(Request $request, Closure $next, ...$roles)
     {
-        // Jika user tidak login atau tidak punya role yang diizinkan
-        if (!Auth::check() || !in_array($request->user()->role, $roles)) {
-            // Kembalikan error 403 Forbidden (Dilarang)
-            return response()->json(['message' => 'This action is unauthorized.'], 403);
+        if (!Auth::check()) {
+            return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        // Jika role cocok, izinkan request dilanjutkan
-        return $next($request);
+        $user = Auth::user();
+
+        foreach ($roles as $role) {
+            // Pastikan Anda memiliki kolom 'role' di tabel users
+            if ($user->role === $role) {
+                return $next($request);
+            }
+        }
+
+        return response()->json(['message' => 'Forbidden: You do not have the required role.'], 403);
     }
 }

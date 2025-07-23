@@ -11,22 +11,18 @@ class CategorySeeder extends Seeder
 {
     public function run(): void
     {
-        // Hapus data lama untuk menghindari duplikat
         DB::table('categories')->delete();
 
-        // Daftar kategori dengan nama dan ikon yang sudah ditentukan
         $categories = [
-            ['name' => 'Fashion', 'icon' => 'shirt'],
-            ['name' => 'Gadgets', 'icon' => 'smartphone'],
-            ['name' => 'Watches', 'icon' => 'watch'],
-            ['name' => 'Furniture', 'icon' => 'armchair'],
-            ['name' => 'Sports', 'icon' => 'bike'],
-            ['name' => 'Groceries', 'icon' => 'shopping-basket'],
-            ['name' => 'Lighting', 'icon' => 'lamp'],
-            ['name' => 'Office', 'icon' => 'briefcase'],
+            ['name' => 'Dairy, Bread & Eggs', 'icon' => 'egg'],
+            ['name' => 'Snacks & Munchies', 'icon' => 'cookie'],
+            ['name' => 'Fruits & Vegetables', 'icon' => 'carrot'],
+            ['name' => 'Cold Drinks & Juices', 'icon' => 'cup-soda'],
+            ['name' => 'Breakfast & Instant Food', 'icon' => 'coffee'],
+            ['name' => 'Bakery & Biscuits', 'icon' => 'cake'],
+            ['name' => 'Chicken, Meat & Fish', 'icon' => 'fish'],
         ];
 
-        // Loop dan masukkan data ke database
         foreach ($categories as $category) {
             DB::table('categories')->insert([
                 'name' => $category['name'],

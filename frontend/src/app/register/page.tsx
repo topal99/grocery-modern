@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, MailCheck, Chrome } from 'lucide-react';
+import { Loader2, MailCheck } from 'lucide-react';
 
 export default function RegisterPage() {
   const [name, setName] = useState('');
@@ -46,7 +46,7 @@ export default function RegisterPage() {
       }
       
       toast.success('Registrasi berhasil!', { id: toastId });
-      setIsSuccess(true); // Set status sukses untuk menampilkan pesan verifikasi
+      setIsSuccess(true); 
 
     } catch (err: any) {
       toast.error(err.message, { id: toastId });
@@ -55,10 +55,9 @@ export default function RegisterPage() {
     }
   };
 
-  // Jika registrasi sudah sukses, tampilkan pesan ini, bukan form lagi.
   if (isSuccess) {
     return (
-        <div className="flex items-center justify-center min-h-screen">
+        <div className="flex items-center justify-center min-h-screen bg-background">
             <div className="text-center p-8 max-w-md mx-auto">
                 <MailCheck className="w-16 h-16 text-green-500 mx-auto mb-4" />
                 <h1 className="text-2xl font-bold mb-4">Pendaftaran Berhasil!</h1>
@@ -75,16 +74,31 @@ export default function RegisterPage() {
   }
 
   return (
-    <div className="w-full lg:grid">
+    // Struktur utama diubah menjadi grid dengan 2 kolom pada layar besar (lg)
+    <div className="w-full lg:grid lg:grid-cols-2 pt-4">
       <Toaster position="top-center" />
-      {/* Kolom Kiri: Form Registrasi */}
+
+      {/* Kolom Kiri: Gambar */}    
+            {/* 'hidden' di mobile, dan 'block' (terlihat) di layar besar (lg) */}
+      <div className="hidden lg:block relative">
+        <Image
+          // Ganti dengan URL gambar Anda dari Unsplash, atau path lokal di folder /public
+          src="http://localhost:8000/storage/banners/signin-g.svg"
+          alt="Gambar Dekoratif Halaman Registrasi"
+          fill // 'fill' akan membuat gambar mengisi seluruh div
+          priority // 'priority' agar gambar dimuat lebih awal
+          className="object-cover" // 'object-cover' agar gambar tidak terdistorsi
+        />
+      </div>
+
+      {/* Kolom Kanan: Form Registrasi */}
       <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
         <div className="mx-auto w-[380px] space-y-6">
-          <CardHeader className="text-center">
+          <CardHeader className="text-center p-0 mb-6">
             <CardTitle className="text-3xl font-bold">Buat Akun Baru</CardTitle>
-            <CardDescription>Isi data di bawah untuk memulai perjalanan belanja Anda.</CardDescription>
+            <CardDescription>Isi data di bawah untuk memulai perjalanan Anda.</CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="p-0">
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <Input id="name" value={name} placeholder="Nama Lengkap" onChange={(e) => setName(e.target.value)} required />
@@ -102,17 +116,17 @@ export default function RegisterPage() {
                 <Label>Daftar sebagai:</Label>
                 <div className="flex items-center space-x-4">
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="role" value="customer" checked={role === 'customer'} onChange={() => setRole('customer')} />
+                    <input type="radio" name="role" value="customer" checked={role === 'customer'} onChange={() => setRole('customer')} className="form-radio"/>
                     Customer
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer">
-                    <input type="radio" name="role" value="store_owner" checked={role === 'store_owner'} onChange={() => setRole('store_owner')} />
+                    <input type="radio" name="role" value="store_owner" checked={role === 'store_owner'} onChange={() => setRole('store_owner')} className="form-radio" />
                     Pemilik Toko
                   </label>
                 </div>
               </div>
-              <Button type="submit" className="w-full bg-black text-white" disabled={isLoading}>
-                {isLoading ? <Loader2 className="animate-spin" /> : 'Daftar'}
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? <Loader2 className="animate-spin mx-auto" /> : 'Daftar'}
               </Button>
             </form>
           </CardContent>
@@ -122,6 +136,7 @@ export default function RegisterPage() {
           </div>
         </div>
       </div>
+      
     </div>
   );
 }

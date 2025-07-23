@@ -64,9 +64,6 @@ Route::get('/toko/{user:slug}', [StorePageController::class, 'show']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('/products/batch', [ProductController::class, 'getByIds']); 
-    Route::get('/profile', [ProfileController::class, 'show']);
-    Route::put('/profile', [ProfileController::class, 'updateProfile']);
-    Route::patch('/profile/password', [ProfileController::class, 'updatePassword']);
     Route::get('/notifications', [NotificationController::class, 'index']);
     Route::post('/notifications/mark-as-read', [NotificationController::class, 'markAsRead']);
 });
@@ -85,6 +82,9 @@ Route::middleware(['auth:sanctum', 'role:store_owner', 'verified'])->group(funct
     Route::get('/owner/returns', [ReturnManagementController::class, 'index']);
     Route::patch('/owner/returns/{returnRequest}', [ReturnManagementController::class, 'update']);
     Route::get('/owner/reviews', [StatsController::class, 'latestReviews']);
+    Route::get('/owner/profile', [ProfileController::class, 'show']);
+    Route::put('/owner/profile', [ProfileController::class, 'updateProfile']);
+    Route::patch('/owner/profile/password', [ProfileController::class, 'updatePassword']);
 });
 
 // Rute KHUSUS untuk ADMIN
@@ -128,4 +128,8 @@ Route::middleware(['auth:sanctum', 'role:customer', 'verified'])->group(function
     
     Route::get('/points/history', [PointsController::class, 'history']);
     Route::post('/points/redeem', [PointsController::class, 'redeem']);
+
+    Route::get('/customer/profile', [ProfileController::class, 'show']);
+    Route::put('/customer/profile', [ProfileController::class, 'updateProfile']);
+    Route::patch('/customer/profile/password', [ProfileController::class, 'updatePassword']);
 });

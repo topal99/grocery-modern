@@ -173,7 +173,7 @@ export default function CheckoutPage() {
 
       toast.success('Pesanan berhasil dibuat!');
       await fetchCart(); 
-      router.push('/my-orders');
+      router.push('/customer/my-orders');
 
     } catch (err: any) {
       toast.error(err.message || "Terjadi kesalahan saat checkout.");

@@ -17,7 +17,12 @@ const nextConfig = {
         hostname: 'localhost', // Tambahkan ini untuk jaga-jaga
         port: '8000',
         pathname: '/storage/**',
-      }
+      },
+      {
+        protocol: 'https',
+        hostname: 'placehold.co',
+      },
+
     ],
   },
 }

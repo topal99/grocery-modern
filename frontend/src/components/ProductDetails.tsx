@@ -66,11 +66,13 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
 
   const rating = product.reviews_avg_rating || 0;
   const reviewsCount = product.reviews_count || 0;
+  const categoryName = product.category?.name || 'Uncategorized';
 
   return (
     <div className="flex flex-col gap-6">
         <Toaster position="top-center" />
         <div>
+          <p className="text-sm text-muted-foreground mb-4">{categoryName}</p>
             <h1 className="text-3xl lg:text-4xl font-bold">{product.name}</h1>
 
             {product.user && product.user.slug && (
@@ -90,7 +92,7 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 <Separator orientation="vertical" className="h-4 hidden sm:block" />
 
                 {/* PERBAIKAN UTAMA: Menampilkan jumlah stok di dalam badge */}
-                <Badge variant={isInStock ? "secondary" : "destructive"}>
+                <Badge variant={isInStock ? "default" : "destructive"}>
                   {isInStock ? `Stok Tersedia (${product.stock})` : "Stok Habis"}
                 </Badge>
             </div>
@@ -100,8 +102,8 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
             <span className="text-3xl font-bold text-primary">Rp {new Intl.NumberFormat('id-ID').format(product.price)}</span>
         </div>
 
-        <p className="text-muted-foreground leading-relaxed">{product.description}</p>
-        <Separator />
+        {/* <p className="text-muted-foreground leading-relaxed">{product.description}</p>
+        <Separator /> */}
 
         <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
 
@@ -112,7 +114,9 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                 <Button variant="ghost" size="icon" className="w-8 h-8" onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}><Plus className="w-4 h-4" /></Button>
             </div>
 
-            <div className="flex-grow w-full">
+            
+        </div>
+        <div className="flex-grow w-full">
                 {user && user.role === 'customer' && (
                   <Button size="lg" variant="ghost-dark" className="w-full text-base outline" onClick={handleAddToCart} disabled={!isInStock || isAdding}>
                       <ShoppingCart className="mr-2 h-5 w-5" />
@@ -120,7 +124,6 @@ export default function ProductDetails({ product }: ProductDetailsProps) {
                   </Button>
                 )}
             </div>
-        </div>
         {!isInStock && (
           <NotifyStockButton productId={product.id} />
           )}

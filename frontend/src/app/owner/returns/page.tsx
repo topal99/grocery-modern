@@ -77,8 +77,7 @@ export default function OwnerReturnsPage() {
   if (isLoading) return <div className="p-8 text-center">Memuat permintaan...</div>;
 
   return (
-    <div className="container mx-auto p-4 md:p-8">
-      <Toaster />
+    <div>
       <h1 className="text-3xl font-bold mb-6">Manajemen Pengembalian Barang</h1>
       
       <div className="space-y-6">

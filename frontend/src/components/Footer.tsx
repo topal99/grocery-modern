@@ -34,11 +34,10 @@ export default function Footer() {
   }
 
   return (
-    <footer className="text-card-foreground border-t ">
-      <div className="container max-w-7xl mx-auto px-4 py-12">
+    <footer className="text-card-foreground border-t">
+      <div className="container max-w-7xl mx-auto px-4 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           <div className="flex flex-col">
-
             <div className="flex items-center gap-2 mb-4">
               <ShoppingBagIcon className="h-7 w-7 text-primary" />
               <Link href="/">
@@ -74,7 +73,7 @@ export default function Footer() {
             </div>
           ))}
         </div>
-        <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
+        <div className="mt-4 pt-4 border-t text-center text-sm text-muted-foreground">
           <p>&copy; {new Date().getFullYear()} Grocery. All Rights Reserved.</p>
         </div>
       </div>

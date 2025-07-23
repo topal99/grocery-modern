@@ -70,7 +70,7 @@ export default function ProductGallery({ product }: ProductGalleryProps) {
       <div className="overflow-hidden" ref={thumbRef}>
         <div className="flex -ml-2">
           {slides.map((slide, index) => (
-            <div className="flex-[0_0_25%] sm:flex-[0_0_20%] pl-2" key={slide.id}>
+            <div className="flex-[0_0_25%] sm:flex-[0_0_20%] m-1 outline" key={slide.id}>
               <button onClick={() => onThumbClick(index)} className="block w-full aspect-square relative rounded-md overflow-hidden">
                 <Image
                   src={`${process.env.NEXT_PUBLIC_API_URL}/storage/${slide.image_url}`}

@@ -27,7 +27,8 @@ export default function ProfilePage() {
     const token = Cookies.get('auth_token');
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
-      const res = await fetch(`${apiUrl}/api/profile`, {
+      // UBAH ENDPOINT PADA BARIS DI BAWAH INI
+      const res = await fetch(`${apiUrl}/api/customer/profile`, { // Diubah dari /api/profile
         headers: { 'Authorization': `Bearer ${token}`, 'Accept': 'application/json' },
       });
       if (!res.ok) throw new Error("Gagal memuat profil.");

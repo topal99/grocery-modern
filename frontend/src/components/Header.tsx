@@ -1,28 +1,26 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useAuthStore } from '@/stores/authStore';
 import { useCartStore } from '@/stores/cartStore';
 import { useEffect, useState, useRef } from 'react';
-import { Menu, Search, ShoppingCart, User, LogOut, LayoutDashboard, Package, History, ChartBar, HistoryIcon, Heart, Settings, CircleQuestionMark, SendToBack, Coins, ShoppingBagIcon } from "lucide-react";
+import {
+  Menu, Search, ShoppingCart, User, LogOut, LayoutDashboard, Package, History,
+  ChartBar, HistoryIcon, Heart, Settings, CircleQuestionMark, SendToBack, Coins, ShoppingBagIcon
+} from "lucide-react";
 import { useWishlistStore } from '@/stores/wishlistStore';
 import { useRouter } from 'next/navigation';
 import Cookies from 'js-cookie';
 import SearchSuggestions from './SearchSuggestions';
 import { useNotificationStore } from '@/stores/notificationStore';
 
+// UI Components
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Separator } from "@/components/ui/separator";
 import NotificationDropdown from './NotificationDropdown';
 import { Badge } from '@/components/ui/badge';
 
@@ -32,10 +30,10 @@ const navLinks = [
 ];
 
 const Logo = () => (
-    <Link href="/" className="flex items-center gap-2">
-        <ShoppingBagIcon className="h-7 w-7 text-primary" />
-        <span className="text-2xl font-bold text-primary">Grocery</span>
-    </Link>
+  <Link href="/" className="flex items-center gap-2">
+    <ShoppingBagIcon className="h-7 w-7 text-primary" />
+    <span className="text-2xl font-bold text-primary">Grocery</span>
+  </Link>
 );
 
 const SearchBar = ({ onSearchSubmit, searchTerm, setSearchTerm, onFocus, isMobile = false }: {
@@ -63,7 +61,6 @@ const SearchBar = ({ onSearchSubmit, searchTerm, setSearchTerm, onFocus, isMobil
 export default function Header() {
   const { user, token, logout } = useAuthStore();
   const { items: cartItems, fetchCart, clearCartOnLogout } = useCartStore();
-  // KOREKSI #1: Menggunakan nama properti yang benar dari store
   const { wishlistedProductIds, fetchWishlist, clearWishlistOnLogout } = useWishlistStore();
   const { fetchNotifications } = useNotificationStore();
   const router = useRouter();
@@ -71,7 +68,7 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-  const [suggestions, setSuggestions] = useState([]);
+  const [suggestions, setSuggestions] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const searchContainerRef = useRef<HTMLDivElement>(null);
@@ -147,80 +144,112 @@ export default function Header() {
     );
   }
   
-  const AccountActions = () => (
+  const AccountPopover = () => (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="rounded-full">
+            {user ? (
+                <Avatar className="h-8 w-8">
+                    <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                </Avatar>
+            ) : (
+                <User className="h-6 w-6" />
+            )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-64" align="end">
+        {token && user ? (
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center gap-3 p-2">
+              <Avatar>
+                 <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+              </Avatar>
+              <div className="flex flex-col">
+                <span className="font-semibold text-sm truncate">{user.name}</span>
+                <span className="text-xs text-muted-foreground truncate">{user.email}</span>
+              </div>
+            </div>
+            <Separator />
+            <nav className="flex flex-col gap-1 p-1">
+              {user.role === 'customer' && (
+                <>
+                  <Link href="/customer/my-orders" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><HistoryIcon className="mr-2 h-4 w-4" />Riwayat Pesanan</Link>
+                  <Link href="/customer/points" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><Coins className="mr-2 h-4 w-4" />Poin</Link>
+                  <Link href="/customer/wishlist" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><Heart className="mr-2 h-4 w-4" />Disukai</Link>
+                  <Link href="/customer/profile" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><Settings className="mr-2 h-4 w-4" />Pengaturan Akun</Link>
+                </>
+              )}
+              {user.role === 'store_owner' && (
+                <>
+                  <Link href="/owner/dashboard" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><ChartBar className="mr-2 h-4 w-4" />Dashboard</Link>
+                  {/* <Link href="/owner/my-products" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><Package className="mr-2 h-4 w-4" />Produk</Link>
+                  <Link href="/owner/orders" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><History className="mr-2 h-4 w-4" />Pesanan</Link>
+                  <Link href="/owner/qna" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><CircleQuestionMark className="mr-2 h-4 w-4" />Tanya Jawab</Link>
+                  <Link href="/owner/returns" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><SendToBack className="mr-2 h-4 w-4" />Pengembalian</Link> */}
+                  </>
+              )}
+              {user.role === 'admin' && (
+                <Link href="/admin/users" className="flex items-center p-2 rounded-md hover:bg-accent text-sm"><LayoutDashboard className="mr-2 h-4 w-4" /> Panel Admin</Link>
+              )}
+            </nav>
+            <Separator />
+            <Button variant="ghost" className="w-full justify-start text-red-500 hover:text-red-600 hover:bg-red-50" onClick={handleLogout}>
+              <LogOut className="mr-2 h-4 w-4" /> Logout
+            </Button>
+          </div>
+        ) : (
+          <div className="grid gap-2">
+            <Button asChild><Link href="/login" className="w-full">Login</Link></Button>
+            <Button variant="outline" asChild><Link href="/register" className="w-full">Register</Link></Button>
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
+  );
+
+  const AccountActionsMobile = () => (
     <>
       {user && user.role === 'customer' && (
         <>
             <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist" asChild>
-                <Link href="/wishlist">
+                <Link href="/wishlist" onClick={() => setIsMobileMenuOpen(false)}>
                     <Heart className="h-6 w-6" />
-                    {/* KOREKSI #2: Menggunakan .size untuk menghitung jumlah item di Set */}
                     {wishlistedProductIds.size > 0 && (
-                        <Badge variant="destructive" className="absolute top-1 right-1 h-4 w-4 p-0 flex items-center justify-center text-xs">{wishlistedProductIds.size}</Badge>
+                                  <Badge variant="destructive" className="absolute top-0 right-0 h-4 w-4 p-2 flex items-center justify-center text-white">
+                          {wishlistedProductIds.size}</Badge>
                     )}
                 </Link>
             </Button>
             <Button variant="ghost" size="icon" className="relative" aria-label="Cart" asChild>
-                <Link href="/cart">
+                <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>
                     <ShoppingCart className="h-6 w-6" />
                     {cartItems.length > 0 && (
-                        <Badge className="absolute top-1 right-1 h-4 w-4 p-0 flex items-center justify-center text-xs bg-accent text-accent-foreground">{cartItems.length}</Badge>
+                                  <Badge variant="destructive" className="absolute top-0 right-0 h-4 w-4 p-2 flex items-center justify-center text-white">
+                          {cartItems.length}</Badge>
                     )}
                 </Link>
             </Button>
         </>
       )}
       {user && <NotificationDropdown />}
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-            <Button variant="ghost" size="icon" aria-label="Account">
-                <User className="h-6 w-6" />
-            </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          {token && user ? (
-            <>
-              <DropdownMenuLabel>Hi, {user.name}!</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {user.role === 'customer' && (
-              <>
-                <DropdownMenuItem asChild><Link href="/my-orders"><HistoryIcon className="mr-2 h-4 w-4" />Riwayat Pesanan</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/my-account/points"><Coins className="mr-2 h-4 w-4" />Poin</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/wishlist"><Heart className="mr-2 h-4 w-4" />Disukai</Link></DropdownMenuItem>
-                <DropdownMenuItem asChild><Link href="/my-account/profile"><Settings className="mr-2 h-4 w-4" />Pengaturan Akun</Link></DropdownMenuItem>
-              </>
-              )}
-              {user.role === 'store_owner' && (
-                <>
-                  <DropdownMenuItem asChild><Link href="/owner/dashboard"><ChartBar className="mr-2 h-4 w-4" />Dashboard</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/owner/my-products"><Package className="mr-2 h-4 w-4" />Produk</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/owner/orders"><History className="mr-2 h-4 w-4" />Pesanan</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/owner/qna"><CircleQuestionMark className="mr-2 h-4 w-4" />Tanya Jawab</Link></DropdownMenuItem>
-                  <DropdownMenuItem asChild><Link href="/owner/returns"><SendToBack className="mr-2 h-4 w-4" />Pengembalian Barang</Link></DropdownMenuItem>
-                </>
-              )}
-              {user.role === 'admin' && (<DropdownMenuItem asChild><Link href="/admin/users"><LayoutDashboard className="mr-2 h-4 w-4" /> Panel Admin</Link></DropdownMenuItem>)}
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={handleLogout} className="text-red-500 cursor-pointer focus:bg-red-50 focus:text-red-600"><LogOut className="mr-2 h-4 w-4" />Logout</DropdownMenuItem>
-            </>
-          ) : (
-            <>
-              <DropdownMenuItem asChild><Link href="/login">Login</Link></DropdownMenuItem>
-              <DropdownMenuItem asChild><Link href="/register">Register</Link></DropdownMenuItem>
-            </>
-          )}
-        </DropdownMenuContent>
-      </DropdownMenu>
+      {/* Popover Akun sudah dipindah keluar dari menu mobile */}
     </>
   );
 
   return (
-    <header className="py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50">
-      <div className="container mx-auto px-4 flex max-w-7xl justify-between items-center gap-4">
+    <header className="py-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 sticky top-0 z-50 ">
+      <div className="container mx-auto px-4 flex max-w-7xl justify-between items-center gap-4 ">
         <div className="flex items-center gap-8">
             <Logo />
         </div>
-
+        
+        <div className="hidden lg:flex flex-1 max-w-xl ml-4" ref={searchContainerRef}>
+          <nav className="flex text-sm font-medium gap-4">
+            {navLinks.map((link) => (
+              <Link key={link.label} href={link.href} className="text-foreground hover:text-primary"> {link.label}</Link>))}
+          </nav>
+        </div>
+              
         <div className="hidden lg:flex flex-1 max-w-xl" ref={searchContainerRef}>
             <div className="relative w-full">
                 <SearchBar 
@@ -240,11 +269,36 @@ export default function Header() {
         </div>
 
         <div className="flex items-center gap-2">
+            {/* --- TAMPILAN DESKTOP --- */}
             <div className="hidden lg:flex items-center gap-1">
-                <AccountActions />
+                {user && user.role === 'customer' && (
+                  <>
+                      {/* <Button variant="ghost" size="icon" className="relative" aria-label="Wishlist" asChild>
+                          <Link href="/wishlist">
+                              <Heart className="h-6 w-6" />
+                              {wishlistedProductIds.size > 0 && (
+                                  <Badge variant="destructive" className="absolute top-0 right-0 h-4 w-4 p-2 flex items-center justify-center text-white">
+                                    {wishlistedProductIds.size}</Badge>
+                              )}
+                          </Link>
+                      </Button> */}
+                      <Button variant="ghost" size="icon" className="relative" aria-label="Cart" asChild>
+                          <Link href="/cart">
+                              <ShoppingCart className="h-6 w-6" />
+                              {cartItems.length > 0 && (
+                                  <Badge variant="destructive" className="absolute top-0 right-0 h-4 w-4 p-2 flex items-center justify-center text-white">
+                                    {cartItems.length}</Badge>
+                              )}
+                          </Link>
+                      </Button>
+                  </>
+                )}
+                {user && <NotificationDropdown />}
+                <AccountPopover />
             </div>
             
-            <div className="lg:hidden">
+            <div className="lg:hidden flex items-center gap-2">
+              <AccountPopover /> {/* <-- Popover dipindah ke sini */}
               <Sheet open={isMobileMenuOpen} onOpenChange={setIsMobileMenuOpen}>
                 <SheetTrigger asChild>
                   <Button variant="outline" size="icon">
@@ -271,7 +325,8 @@ export default function Header() {
                     </div>
 
                     <div className='flex items-center justify-around border-y py-2'>
-                        <AccountActions />
+                        {/* Komponen ini sekarang tidak lagi berisi Popover Akun */}
+                        <AccountActionsMobile />
                     </div>
 
                     <nav className="flex flex-col gap-4 text-lg font-medium flex-grow">
